@@ -1,10 +1,9 @@
 import React from "react";
 
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-
-import styles from "./CadastrarInformacoes.module.css";
+import styles from './CadastrarExperiencia.module.css';
 
 interface FormValues {
     foto: string;
@@ -13,61 +12,77 @@ interface FormValues {
     resumo: string;
 }
 
-const CadastrarInfconst CadastrarInformacoes: React.FC = () =>{
+const CadastrarInformacoes: React.FC = () => {
 
-    const inicialValues: FormValues {
-        foto: '';
-        nome: '';
-        cargo: '';
-        resumo: '';
+    const inicialValues: FormValues = {
+        foto: '',
+        nome: '',
+        cargo: '',
+        resumo: '',
     };
 
-    constValidationScheme = Yup.object().shape({
-        foto: yup.string().required('Campo obrigatório'),
-        nome: yup.string().required('Campo obrigatório'),
-        cargo: yup.string().required('Campo obrigatório'),
-        resumo: yup.string().required('Campo obrigatório'),
-
+    const validationScheme = Yup.object().shape({
+        foto: Yup.string().required('Campo obrigatório'),
+        nome: Yup.string().required('Campo obrigatório'),
+        cargo: Yup.string().required('Campo obrigatório'),
+        resumo: Yup.string().required('Campo obrigatório'),
     })
 
-    const onSubmit = (values: FormValues, {resetForm} : {resetForm: () => void }) => {
+    const onSubmit = (values: FormValues, { resetForm }: { resetForm: () => void }) => {
         //logica de envio para backend
-        console.log (values);
+        console.log(values);
         resetForm();
         alert('Formulário enviado com sucesso');
     };
-    
-    
+
     return (
         <div className={styles.formWrapper}>
 
-                <form action=""className={styles.form}>
-                    
-                <h2 className={styles.title}>Imformações Pessoais</h2>
+            <Formik initialValues={inicialValues} validationSchema={validationScheme} onSubmit={onSubmit}>
+                {({ errors, touched }) => (
+                    <Form className={styles.form}>
 
-                    <fieldset className={styles.formGroup}>
-                        <label htmlFor="foto" className={styles.label}>Foto</label>
-                        <input type="text" name="foto" id="foto" className={styles.input}/>
-                    </fieldset>
+                        
+                        
+                        <h2 className={styles.title}>Imformações Pessoais</h2>
 
-                    <fieldset className={styles.formGroup}>
-                        <label htmlFor="nome" className={styles.label}>None</label>
-                        <input type="text" name="nome" id="nome" className={styles.input}/>
-                    </fieldset>
+                        <Input
+                            label="Foto"
+                            name="Foto"
+                            errors={errors.foto}
+                            touched={touched.foto}
+                        />
 
-                    <fieldset className={styles.formGroup}>
-                        <label htmlFor="cargo" className={styles.label}>Cargo</label>
-                        <input type="text" name="cargo" id="cargo" className={styles.input}/>
-                    </fieldset>
+                        <Input
+                            label="Nome"
+                            name="nome"
+                            errors={errors.nome}
+                            touched={touched.nome}
+                        />
+                            
+                        
+                        <Input
+                            label="Cargo"
+                            name="cargo"
+                            errors={errors.cargo}
+                            touched={touched.cargo}
+                        />
+                           
+                        <Textarea
+                            label="Resumo"
+                            name="resumo"
+                            errors={errors.resumo}
+                            touched={touched.resumo}
+                        />
 
-                    <fieldset className={styles.formGroup}>
-                        <label htmlFor="resumo" className={styles.label}>Resumo</label>
-                        <textarea name="resumo" id="resumo" className={styles.textarea}></textarea>
-                    </fieldset>
+                        <button type="submit" className={styles.button}>Salvar</button>
 
-                </form>
-                 
-            </div>
+                    </Form>
+                )}
+            </Formik>
+            <button type="submit" className={styles.button}>salvar</button>
+        </div>
     );
 };
+
 export default CadastrarInformacoes;
